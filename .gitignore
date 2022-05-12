@@ -1,0 +1,7 @@
+test.sh
+cloud-test.tar.gz
+**/__pycache__/**
+.tox/**
+src/nvme_disk_qual.egg-info/**
+config.yaml
+TODO

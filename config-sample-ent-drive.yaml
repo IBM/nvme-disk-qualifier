@@ -1,0 +1,55 @@
+drive:
+  name: nvme0 # Pick any NVMe drive.  Ex. nvme0, nvme1, nvme2, etc...
+  psid: PSID # Change to the PSID of the drive, usually found on the device label
+execute: # All tests run.
+  - fw_update_simple
+  - opal_capable
+  - opal_test_locked_write
+  - ns_layout
+  - secure_erase_drive
+  - secure_erase_multi_namespace
+  - parallel
+  - perf_seq_read
+  - perf_seq_write
+  - perf_seq_mixed
+  - perf_rand_read
+  - perf_rand_write
+  - multi_ns_perf
+test_config:
+  general:
+    fio_runtime: 1200
+    fio_ramptime: 60
+    max_ns: 32 # Max number of namespaces for the drive
+  perf_seq_write:
+    bandwidth: 3000000 # 3 GB/s
+  perf_seq_read:
+    bandwidth: 3000000 # 3 GB/s
+  perf_seq_mixed:
+    bw_mixed: 3000000 # 3 GB/s
+    bw_read: 1500000 # 1.5 GB/s
+    bw_write: 1500000 # 1.5 GB/s
+  perf_rand_read:
+    iops: 750000
+  perf_rand_write:
+    iops: 250000
+  parallel:
+    initial_ns: 5
+    ns_fio_size: 500 # in GB
+    ns_size: 20 # in GB
+    random_ops: 100
+  multi_ns_perf:
+    bw_mixed: 3000000 # 3 GB/s
+    bw_read: 1500000 # 1.5 GB/s
+    bw_write: 1500000 # 1.5 GB/s
+    ns_size: 20 # in GB
+  ns_layout:
+    ns_size: 20 # in GB
+  secure_erase_multi_namespace:
+    ns: 4 # Must be greater than 2
+    ns_size: 20 # in GB
+  secure_erase_drive:
+    ns: 4 # Must be greater than 2
+    ns_size: 20 # in GB
+  fw_update_simple:
+    fw_file: "PATH_TO_FW" # Should be a file with the firmware path
+    expected_version: "VERSION_STRING" # The expected version after the update.  Does not revert to original when done.
