@@ -70,7 +70,7 @@ su
 yum -y install fio nvme-cli python3 python3-pip
 
 # The requirements.txt is from this source folder
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 # Get the sedutil-cli
 wget -c https://github.com/Drive-Trust-Alliance/exec/blob/master/sedutil_LINUX.tgz?raw=true \
@@ -91,7 +91,7 @@ sudo su
 apt-get install -y fio python3-pip python3
 
 # The requirements.txt is from this source folder
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 # Needs an updated nvme-cli, that supports json output
 wget http://launchpadlibrarian.net/496810028/nvme-cli_1.9-1ubuntu0.1_amd64.deb
@@ -117,7 +117,7 @@ sudo su
 apt-get install -y fio nvme-cli python3 python3-pip
 
 # The requirements.txt is from this source folder
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 # Get the sedutil-cli
 wget -c https://github.com/Drive-Trust-Alliance/exec/blob/master/sedutil_LINUX.tgz?raw=true \
