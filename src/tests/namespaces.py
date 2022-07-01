@@ -23,10 +23,10 @@ import time
 
 class NSLayout(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(NSLayout, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.namespace_size = (config['test_config']['ns_layout']['ns_size'] *
                                1024 * 1024 * 1024)
         self.num_namespaces = config['test_config']['general']['max_ns']
@@ -95,10 +95,10 @@ class NSLayout(run.Run):
 
 class MultiNSPerf(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(MultiNSPerf, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_read_bw = config['test_config']['multi_ns_perf']['bw_read']
@@ -170,10 +170,10 @@ class MultiNSPerf(run.Run):
 
 class ParallelIO(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(ParallelIO, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.random_ops = config['test_config']['parallel']['random_ops']
         self.fio_ns_size = (config['test_config']['parallel']
                             ['ns_fio_size'] * 1024 * 1024 * 1024)

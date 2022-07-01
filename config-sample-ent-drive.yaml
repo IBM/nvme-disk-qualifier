@@ -1,6 +1,6 @@
-drive:
-  name: nvme0 # Pick any NVMe drive.  Ex. nvme0, nvme1, nvme2, etc...
-  psid: PSID # Change to the PSID of the drive, usually found on the device label
+drives:
+  - { name: "nvme0", psid: "XYZ" }
+  - { name: "nvme1", psid: "ABC" }
 execute: # All tests run.
   - fw_update_simple
   - opal_capable

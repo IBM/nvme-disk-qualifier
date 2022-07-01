@@ -22,10 +22,10 @@ import json
 
 class RandRead(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(RandRead, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_iops = config['test_config']['perf_rand_read']['iops']
@@ -76,10 +76,10 @@ class RandRead(run.Run):
 
 class RandWrite(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(RandWrite, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_iops = config['test_config']['perf_rand_read']['iops']
@@ -130,10 +130,10 @@ class RandWrite(run.Run):
 
 class SeqMixed(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(SeqMixed, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_read_bw = config['test_config']['perf_seq_mixed']['bw_read']
@@ -200,10 +200,10 @@ class SeqMixed(run.Run):
 
 class SeqRead(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(SeqRead, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_bw = config['test_config']['perf_seq_read']['bandwidth']
@@ -254,10 +254,10 @@ class SeqRead(run.Run):
 
 class SeqWrite(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(SeqWrite, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_bw = config['test_config']['perf_seq_write']['bandwidth']

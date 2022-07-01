@@ -23,10 +23,10 @@ import time
 
 class ApplyNew(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(ApplyNew, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.fw_path = config['test_config']['fw_update_simple']['fw_file']
         self.expected_version = config['test_config']['fw_update_simple']['expected_version']
 

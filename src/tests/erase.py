@@ -22,10 +22,10 @@ import json
 
 class SecureEraseWithMultiNamespaces(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(SecureEraseWithMultiNamespaces, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ns_qty = config['test_config']['secure_erase_multi_namespace']['ns']
         self.ns_size = (
             config['test_config']['secure_erase_multi_namespace']['ns_size'] *
@@ -105,10 +105,10 @@ class SecureEraseWithMultiNamespaces(run.Run):
 
 class SecureEraseDrive(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(SecureEraseDrive, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
         self.ns_qty = config['test_config']['secure_erase_drive']['ns']
         self.ns_size = (
             config['test_config']['secure_erase_drive']['ns_size'] *

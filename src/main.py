@@ -48,7 +48,7 @@ def init_argparse() -> argparse.ArgumentParser:
 
 
 def write_report(tests, drive, output_path):
-    r = open(output_path, "w+")
+    r = open(output_path, "a+")
 
     r.write("NVMe Disk Tester\n")
 
@@ -96,34 +96,35 @@ def main():
     with open(args.config, 'r') as config_file:
         config = yaml.safe_load(config_file)
 
-    tests = [opal.OpalCapable(config),
-             opal.OpalLockTest(config),
-             namespaces.NSLayout(config),
-             namespaces.ParallelIO(config),
-             perf.SeqRead(config),
-             perf.SeqWrite(config),
-             perf.SeqMixed(config),
-             perf.RandRead(config),
-             perf.RandWrite(config),
-             namespaces.MultiNSPerf(config),
-             erase.SecureEraseDrive(config),
-             erase.SecureEraseWithMultiNamespaces(config),
-             firmware.ApplyNew(config)
-             ]
+    for drive in config['drives']:
+        logger.info(f"Starting test on drive: {drive['name']}")
+        tests = [opal.OpalCapable(config, drive),
+            opal.OpalLockTest(config, drive),
+            namespaces.NSLayout(config, drive),
+            namespaces.ParallelIO(config, drive),
+            perf.SeqRead(config, drive),
+            perf.SeqWrite(config, drive),
+            perf.SeqMixed(config, drive),
+            perf.RandRead(config, drive),
+            perf.RandWrite(config, drive),
+            namespaces.MultiNSPerf(config, drive),
+            erase.SecureEraseDrive(config, drive),
+            erase.SecureEraseWithMultiNamespaces(config, drive),
+            firmware.ApplyNew(config, drive)
+            ]
+        for test in tests:
+            if test.name() in config.get('execute', []) or config.get('execute') is None:
+                logger.info(f"Starting test: {test.name()}")
+                logger.info(f"  Description: {test.description()}")
+                test.execute()
+                logger.info(f"  Test finished.  Result: {test.result()}")
+                time.sleep(1)
+            else:
+                logger.info(f"Ignoring test: {test.name()}")
 
-    for test in tests:
-        if test.name() in config.get('execute', []) or config.get('execute') is None:
-            logger.info(f"Starting test: {test.name()}")
-            logger.info(f"  Description: {test.description()}")
-            test.execute()
-            logger.info(f"  Test finished.  Result: {test.result()}")
-            time.sleep(1)
-        else:
-            logger.info(f"Ignoring test: {test.name()}")
-
-    logger.info("All tests complete.  Compiling report.")
-    write_report(tests, config['drive']['name'], args.report)
-    logger.info("Test finished.")
+        logger.info("All tests complete.  Compiling report.")
+        write_report(tests, drive['name'], args.report)
+        logger.info("Test finished.")
 
 
 if __name__ == '__main__':

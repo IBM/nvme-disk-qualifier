@@ -20,10 +20,10 @@ from tests import run
 
 class OpalCapable(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(OpalCapable, self).__init__()
 
-        self.drive = config['drive']['name']
+        self.drive = drive['name']
 
     def name(self):
         return "opal_capable"
@@ -45,11 +45,11 @@ class OpalCapable(run.Run):
 
 class OpalLockTest(run.Run):
 
-    def __init__(self, config):
+    def __init__(self, config, drive):
         super(OpalLockTest, self).__init__()
 
-        self.drive = config['drive']['name']
-        self.psid = config['drive']['psid']
+        self.drive = drive['name']
+        self.psid = drive['psid']
 
     def name(self):
         return "opal_test_locked_write"
