@@ -279,7 +279,7 @@ class SeqWrite(run.Run):
         # Create a single namespace
         n_utils.factory_reset(tree[self.drive]['sn'].strip())
 
-        cmd = (f'fio --name=seqwrite --iodepth=64 --rw=read --bs=256k --runtime={self.duration} '
+        cmd = (f'fio --name=seqwrite --iodepth=64 --rw=write --bs=256k --runtime={self.duration} '
                f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
                f'--filename=/dev/{self.drive}n1 --output-format=json')
         self.logger.info(f"Command: {cmd}")
@@ -294,13 +294,13 @@ class SeqWrite(run.Run):
         results = json.loads(std_out)
         self.logger.info(f"Raw Test Results: {json.dumps(results, indent=2)}")
 
-        test_bw = results['jobs'][0]['read']['bw']
+        test_bw = results['jobs'][0]['write']['bw']
         if test_bw < self.min_bw:
             self.logger.error(
                 f"Drive must hit at least {self.min_bw}.  Drive only gets to {test_bw}.  DRIVE FAILED.")
             return
 
-        # TODO latency checks anyone?
+        # TODO latency checks - anyone?
 
         # Consider a success
         self.logger.info("Drive passed bandwidth requirements.")
