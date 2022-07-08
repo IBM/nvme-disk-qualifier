@@ -300,7 +300,7 @@ class SeqWrite(run.Run):
                 f"Drive must hit at least {self.min_bw}.  Drive only gets to {test_bw}.  DRIVE FAILED.")
             return
 
-        # TODO latency checks anyone?
+        # TODO latency checks - anyone?
 
         # Consider a success
         self.logger.info("Drive passed bandwidth requirements.")
