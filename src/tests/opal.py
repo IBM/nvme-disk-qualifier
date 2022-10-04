@@ -93,7 +93,7 @@ class OpalLockTest(run.Run):
             f'--ramp=2 --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
             f'--filename=/dev/{self.drive}n1 --output-format=json', shell=True,
             fail_on_err=False)
-        if 'error on file /dev/nvme0n1' not in stderr or rc == 0:
+        if f'error on file /dev/{self.drive}n1' not in stderr or rc == 0:
             self.logger.error(
                 f"Writing to drive seems to pass, even though "
                 f"drive {self.drive} is locked")

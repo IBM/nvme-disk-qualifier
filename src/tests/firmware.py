@@ -29,6 +29,7 @@ class ApplyNew(run.Run):
         self.drive = config['drive']['name']
         self.fw_path = config['test_config']['fw_update_simple']['fw_file']
         self.expected_version = config['test_config']['fw_update_simple']['expected_version']
+        self.slot = config['test_config']['fw_update_simple']['slot']
 
     def name(self):
         return "fw_update_simple"
@@ -65,7 +66,7 @@ class ApplyNew(run.Run):
 
 
         # # Step 2: dry-run activate the firmware
-        # cmd = f'nvme fw-activate /dev/{self.drive} -a 0 -s 1'
+        # cmd = f'nvme fw-activate /dev/{self.drive} -a 0 -s 2'
         # self.logger.info(f"Firmware activate command: {cmd}")
         # rc, std_out, std_err = n_utils.run_cmd(
         #     cmd, shell=True, fail_on_err=False)
@@ -77,7 +78,7 @@ class ApplyNew(run.Run):
         #     self.logger.info(f"Firmware activate completed successfully.  Response: \n{std_out}")
 
         # Step 3: activate the firmware
-        cmd = f'nvme fw-activate /dev/{self.drive} -a 1 -s 1'
+        cmd = f'nvme fw-activate /dev/{self.drive} -a 1 -s {self.slot}'
         self.logger.info(f"Firmware activate command: {cmd}")
         rc, std_out, std_err = n_utils.run_cmd(
             cmd, shell=True, fail_on_err=False)
