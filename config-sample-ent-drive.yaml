@@ -53,3 +53,4 @@ test_config:
   fw_update_simple:
     fw_file: "PATH_TO_FW" # Should be a file with the firmware path
     expected_version: "VERSION_STRING" # The expected version after the update.  Does not revert to original when done.
+    slot: 2 # The slot to use.
