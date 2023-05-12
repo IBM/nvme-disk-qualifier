@@ -30,14 +30,14 @@ logger = logging.getLogger(__name__)
 def run_background_cmd(command, shell=False):
     process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, shell=shell,
-                               universal_newlines=True)
+                               universal_newlines=True, errors='replace')
 
 
 def run_cmd(command, shell=False, expected_rc=0, fail_on_err=True,
             warn_on_err=True):
     process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, shell=shell,
-                               universal_newlines=True)
+                               universal_newlines=True, errors='replace')
     stdout, stderr = process.communicate()
     stdout = stdout.strip()
     stderr = stderr.strip()
