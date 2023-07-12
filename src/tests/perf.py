@@ -82,7 +82,7 @@ class RandWrite(run.Run):
         self.drive = config['drive']['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
-        self.min_iops = config['test_config']['perf_rand_read']['iops']
+        self.min_iops = config['test_config']['perf_rand_write']['iops']
 
     def name(self):
         return "perf_rand_write"
