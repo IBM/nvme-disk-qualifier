@@ -45,10 +45,10 @@ Usage is essentially three different steps.
 The test can be started with the following:
 
 ```
-python3 main.py -c ~/path_to_config.yaml -o ~/path_to_report.txt
+python3 main.py -c ~/path_to_config.yaml -r ~/path_to_report.txt
 ```
 
-The `-c` parameter references the configuration file. The `-o` is the location to store the result.
+The `-c` parameter references the configuration file. The `-r` is the location to store the result.
 
 Execution duration will depend highly on the configuration passed in. Tests may take several hours
 or a few minutes. It is recommended that if you're runing the tests over SSH, you use a tool like

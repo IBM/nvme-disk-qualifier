@@ -29,6 +29,8 @@ class RandRead(run.Run):
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_iops = config['test_config']['perf_rand_read']['iops']
+        local_duration = config['test_config']['perf_rand_read'].get('runtime')
+        self.duration = (local_duration, self.duration)[local_duration is None]
 
     def name(self):
         return "perf_rand_read"
@@ -83,6 +85,8 @@ class RandWrite(run.Run):
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_iops = config['test_config']['perf_rand_write']['iops']
+        local_duration = config['test_config']['perf_rand_write'].get('runtime')
+        self.duration = (local_duration, self.duration)[local_duration is None]
 
     def name(self):
         return "perf_rand_write"
@@ -139,6 +143,8 @@ class SeqMixed(run.Run):
         self.min_read_bw = config['test_config']['perf_seq_mixed']['bw_read']
         self.min_write_bw = config['test_config']['perf_seq_mixed']['bw_write']
         self.min_mixed_bw = config['test_config']['perf_seq_mixed']['bw_mixed']
+        local_duration = config['test_config']['perf_seq_mixed'].get('runtime')
+        self.duration = (local_duration, self.duration)[local_duration is None]
 
     def name(self):
         return "perf_seq_mixed"
@@ -207,6 +213,8 @@ class SeqRead(run.Run):
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_bw = config['test_config']['perf_seq_read']['bandwidth']
+        local_duration = config['test_config']['perf_seq_read'].get('runtime')
+        self.duration = (local_duration, self.duration)[local_duration is None]
 
     def name(self):
         return "perf_seq_read"
@@ -261,6 +269,8 @@ class SeqWrite(run.Run):
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['general']['fio_runtime']
         self.min_bw = config['test_config']['perf_seq_write']['bandwidth']
+        local_duration = config['test_config']['perf_seq_write'].get('runtime')
+        self.duration = (local_duration, self.duration)[local_duration is None]
 
     def name(self):
         return "perf_seq_write"
