@@ -44,14 +44,22 @@ Usage is essentially three different steps.
 
 The test can be started with the following:
 
-```
+```shell
 python3 main.py -c ~/path_to_config.yaml -r ~/path_to_report.txt
 ```
 
 The `-c` parameter references the configuration file. The `-r` is the location to store the result.
 
 Execution duration will depend highly on the configuration passed in. Tests may take several hours
-or a few minutes. It is recommended that if you're runing the tests over SSH, you use a tool like
+or a few minutes. Individual tests can be configured to run for specified amount of time using `runtime`.
+
+```yaml
+perf_seq_write:
+  runtime: 180
+```
+
+If undefined, the tests will run for amount of time specified by the value of `fio_runtime` in config.
+It is recommended that if you're runing the tests over SSH, you use a tool like
 `screen` or run the test as a background process. This will allow the test to continue in the event
 you lose connectivity.
 
