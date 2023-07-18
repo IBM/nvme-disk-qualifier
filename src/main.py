@@ -88,6 +88,11 @@ def write_report(tests, drive, output_path):
 
     r.close()
 
+def restore_drive(config):
+    drive = config['drive']['name']
+    tree = n_utils.generate_resource_tree()
+    n_utils.factory_reset(tree[drive]['sn'].strip())
+    return
 
 def main():
     parser = init_argparse()
@@ -120,6 +125,9 @@ def main():
             time.sleep(1)
         else:
             logger.info(f"Ignoring test: {test.name()}")
+
+    # cleanup any namespaces on the drive
+    restore_drive(config)
 
     logger.info("All tests complete.  Compiling report.")
     write_report(tests, config['drive']['name'], args.report)
