@@ -100,7 +100,8 @@ class MultiNSPerf(run.Run):
 
         self.drive = config['drive']['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
-        self.duration = config['test_config']['general']['fio_runtime']
+        self.duration = config['test_config']['perf_seq_write'].get('runtime', \
+            config['test_config']['general']['fio_runtime'])
         self.min_read_bw = config['test_config']['multi_ns_perf']['bw_read']
         self.min_write_bw = config['test_config']['multi_ns_perf']['bw_write']
         self.min_mixed_bw = config['test_config']['multi_ns_perf']['bw_mixed']

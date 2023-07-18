@@ -50,18 +50,27 @@ python3 main.py -c ~/path_to_config.yaml -r ~/path_to_report.txt
 
 The `-c` parameter references the configuration file. The `-r` is the location to store the result.
 
-Execution duration will depend highly on the configuration passed in. Tests may take several hours
-or a few minutes. Individual tests can be configured to run for specified amount of time using `runtime`.
+Execution duration will depend highly on the configuration passed in. Tests
+may take several hours or a few minutes. For the following tests, you can override
+the runtime by specifying it with `runtime` in the config:
+
+  1. perf_seq_read
+  2. perf_seq_write
+  3. perf_seq_mixed
+  4. perf_rand_read
+  5. perf_rand_write
+  6. multi_ns_perf
 
 ```yaml
 perf_seq_write:
+  bandwidth: 3000000 # 3 GB/s
   runtime: 180
 ```
 
-If undefined, the tests will run for amount of time specified by the value of `fio_runtime` in config.
-It is recommended that if you're runing the tests over SSH, you use a tool like
-`screen` or run the test as a background process. This will allow the test to continue in the event
-you lose connectivity.
+If not specified, the tests will use the default runtime specified by the value of
+`fio_runtime` in config. It is recommended that if you're runing the tests over
+SSH, you use a tool like `screen` or run the test as a background process. This
+will allow the test to continue in the event you lose connectivity.
 
 ## Installation
 
