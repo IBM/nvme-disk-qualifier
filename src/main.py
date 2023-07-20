@@ -91,11 +91,11 @@ def write_report(tests, drive, output_path):
 
 def restore_drive(config):
     drive = config['drive']['name']
-    psid = config['drive']['psid']
-    logger.info(f"Cleaning up drive {drive} through a format.")
-
-    # Start with a PSID reset, just in case it's in a weird state
-    sedutil.reset_via_psid(drive, psid)
+    psid = config['drive'].get('psid')
+    logger.info(f"Cleaning up drive {drive}")
+    if psid is not None:
+        # Start with a PSID reset
+        sedutil.reset_via_psid(drive, psid)
     # Format it.
     tree = n_utils.generate_resource_tree()
     n_utils.factory_reset(tree[drive]['sn'].strip())
