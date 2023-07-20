@@ -13,6 +13,7 @@ import yaml
 from datetime import datetime
 
 from nvme import utils as n_utils
+from nvme import sedutil
 
 from tests import erase
 from tests import firmware
@@ -88,6 +89,16 @@ def write_report(tests, drive, output_path):
 
     r.close()
 
+def restore_drive(config):
+    drive = config['drive']['name']
+    psid = config['drive'].get('psid')
+    logger.info(f"Cleaning up drive {drive}")
+    if psid is not None:
+        # Start with a PSID reset
+        sedutil.reset_via_psid(drive, psid)
+    # Format it.
+    tree = n_utils.generate_resource_tree()
+    n_utils.factory_reset(tree[drive]['sn'].strip())
 
 def main():
     parser = init_argparse()
@@ -113,13 +124,22 @@ def main():
 
     for test in tests:
         if test.name() in config.get('execute', []) or config.get('execute') is None:
-            logger.info(f"Starting test: {test.name()}")
-            logger.info(f"  Description: {test.description()}")
-            test.execute()
-            logger.info(f"  Test finished.  Result: {test.result()}")
-            time.sleep(1)
+            try:
+                logger.info(f"Starting test: {test.name()}")
+                logger.info(f"  Description: {test.description()}")
+                test.execute()
+            except Exception as err:
+                logger.error(f"  Failure executing test: {test.name()}: {err}")
+                # cleanup the drive in case of a test failure
+                restore_drive(config)
+            else:
+                logger.info(f"  Test finished.  Result: {test.result()}")
+                time.sleep(1)
         else:
             logger.info(f"Ignoring test: {test.name()}")
+
+    # cleanup any namespaces on the drive after all the tests are done
+    restore_drive(config)
 
     logger.info("All tests complete.  Compiling report.")
     write_report(tests, config['drive']['name'], args.report)
