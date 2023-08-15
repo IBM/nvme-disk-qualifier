@@ -20,6 +20,7 @@ test_config:
     fio_runtime: 1200
     fio_ramptime: 60
     max_ns: 32 # Max number of namespaces for the drive
+    #ioengine: Specify the io engine for FIO to override the default libaio
   perf_seq_write:
     bandwidth: 3000000 # 3 GB/s
   perf_seq_read:

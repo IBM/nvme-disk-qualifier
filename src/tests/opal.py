@@ -89,7 +89,7 @@ class OpalLockTest(run.Run):
 
         # FIO should fail
         rc, stdout, stderr = n_utils.run_cmd(
-            f'fio --name=seqread --iodepth=64 --rw=read --bs=256k --runtime=5 '
+            f'fio --name=seqread --iodepth=64 --rw=read --bs=128k --runtime=5 '
             f'--ramp=2 --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
             f'--filename=/dev/{self.drive}n1 --output-format=json', shell=True,
             fail_on_err=False)
@@ -114,7 +114,7 @@ class OpalLockTest(run.Run):
 
         # FIO should now pass
         rc, stdout, stderr = n_utils.run_cmd(
-            f'fio --name=seqread --iodepth=64 --rw=read --bs=256k --runtime=5 '
+            f'fio --name=seqread --iodepth=64 --rw=read --bs=128k --runtime=5 '
             f'--ramp=2 --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
             f'--filename=/dev/{self.drive}n1 --output-format=json', shell=True)
 
