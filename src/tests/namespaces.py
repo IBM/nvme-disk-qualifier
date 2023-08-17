@@ -102,6 +102,7 @@ class MultiNSPerf(run.Run):
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['perf_seq_write'].get('runtime', \
             config['test_config']['general']['fio_runtime'])
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
         self.min_read_bw = config['test_config']['multi_ns_perf']['bw_read']
         self.min_write_bw = config['test_config']['multi_ns_perf']['bw_write']
         self.min_mixed_bw = config['test_config']['multi_ns_perf']['bw_mixed']
@@ -140,9 +141,9 @@ class MultiNSPerf(run.Run):
         drive_string = ':'.join(
             [f'/dev/{self.drive}n{x}' for x in range(1, self.num_namespaces + 1)])
         rc, std_out, std_err = \
-            n_utils.run_cmd(f'fio --name=seqmixed --iodepth=64 --rw=rw --bs=256k --runtime={self.duration} '
+            n_utils.run_cmd(f'fio --name=seqmixed --iodepth=64 --rw=rw --bs=128k --runtime={self.duration} '
                             f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-                            f'--filename=/dev/{self.drive}n1 --output-format=json', shell=True)
+                            f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1 --output-format=json', shell=True)
 
         results = json.loads(std_out)
         read_bw = results['jobs'][0]['read']['bw']
@@ -181,6 +182,7 @@ class ParallelIO(run.Run):
         self.ns_size = (config['test_config']['parallel']
                         ['ns_size'] * 1024 * 1024 * 1024)
         self.initial_ns = config['test_config']['parallel']['initial_ns']
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
 
     def name(self):
         return "parallel"
@@ -214,13 +216,13 @@ class ParallelIO(run.Run):
         # Start running both big sequential and random r/w in parallel
         self.logger.debug(f"  Running FIO test.")
         n_utils.run_background_cmd(
-            f'fio --name=seqwrite --iodepth=64 --rw=write --bs=256k --runtime={runtime} '
+            f'fio --name=seqwrite --iodepth=64 --rw=write --bs=128k --runtime={runtime} '
             f'--group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-            f'--filename=/dev/{self.drive}n1', shell=True)
+            f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1', shell=True)
         n_utils.run_background_cmd(
             f'fio --name=4krand5050 --iodepth=1 --rw=randrw --bs=4k --runtime={runtime} '
             f'--group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-            f'--filename=/dev/{self.drive}n2', shell=True)
+            f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n2', shell=True)
 
         # Now bulk create!
         self.logger.debug(

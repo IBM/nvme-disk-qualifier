@@ -29,7 +29,9 @@ class RandRead(run.Run):
         self.ramp = config['test_config']['general']['fio_ramptime']
         self.duration = config['test_config']['perf_rand_read'].get('runtime', \
             config['test_config']['general']['fio_runtime'])
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
         self.min_iops = config['test_config']['perf_rand_read']['iops']
+
 
     def name(self):
         return "perf_rand_read"
@@ -50,7 +52,7 @@ class RandRead(run.Run):
 
         cmd = (f'fio --name=4krandread --iodepth=4 --rw=randread --bs=4k --runtime={self.duration} '
                f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-               f'--filename=/dev/{self.drive}n1 --output-format=json')
+               f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1 --output-format=json')
         self.logger.info(f"Command: {cmd}")
         rc, std_out, std_err = n_utils.run_cmd(cmd, shell=True)
 
@@ -82,6 +84,7 @@ class RandWrite(run.Run):
 
         self.drive = config['drive']['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
         self.duration = config['test_config']['perf_rand_write'].get('runtime', \
             config['test_config']['general']['fio_runtime'])
         self.min_iops = config['test_config']['perf_rand_write']['iops']
@@ -105,7 +108,7 @@ class RandWrite(run.Run):
 
         cmd = (f'fio --name=4krandwrite --iodepth=1 --rw=randwrite --bs=4k --runtime={self.duration} '
                f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-               f'--filename=/dev/{self.drive}n1 --output-format=json')
+               f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1 --output-format=json')
         self.logger.info(f"Command: {cmd}")
         rc, std_out, std_err = n_utils.run_cmd(cmd, shell=True)
 
@@ -137,6 +140,7 @@ class SeqMixed(run.Run):
 
         self.drive = config['drive']['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
         self.duration = config['test_config']['perf_seq_mixed'].get('runtime', \
             config['test_config']['general']['fio_runtime'])
         self.min_read_bw = config['test_config']['perf_seq_mixed']['bw_read']
@@ -161,9 +165,9 @@ class SeqMixed(run.Run):
         # Create a single namespace
         n_utils.factory_reset(tree[self.drive]['sn'].strip())
 
-        cmd = (f'fio --name=seqmixed --iodepth=64 --rw=rw --bs=256k --runtime={self.duration} '
+        cmd = (f'fio --name=seqmixed --iodepth=64 --rw=rw --bs=128k --runtime={self.duration} '
                f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-               f'--filename=/dev/{self.drive}n1 --output-format=json')
+               f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1 --output-format=json')
         self.logger.info(f"Command: {cmd}")
         rc, std_out, std_err = n_utils.run_cmd(cmd, shell=True)
 
@@ -209,6 +213,7 @@ class SeqRead(run.Run):
 
         self.drive = config['drive']['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
         self.duration = config['test_config']['perf_seq_read'].get('runtime', \
             config['test_config']['general']['fio_runtime'])
         self.min_bw = config['test_config']['perf_seq_read']['bandwidth']
@@ -230,9 +235,9 @@ class SeqRead(run.Run):
         # Create a single namespace
         n_utils.factory_reset(tree[self.drive]['sn'].strip())
 
-        cmd = (f'fio --name=seqread --iodepth=64 --rw=read --bs=256k --runtime={self.duration} '
+        cmd = (f'fio --name=seqread --iodepth=64 --rw=read --bs=128k --runtime={self.duration} '
                f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-               f'--filename=/dev/{self.drive}n1 --output-format=json')
+               f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1 --output-format=json')
         self.logger.info(f"Command: {cmd}")
         rc, std_out, std_err = n_utils.run_cmd(cmd, shell=True)
 
@@ -264,6 +269,7 @@ class SeqWrite(run.Run):
 
         self.drive = config['drive']['name']
         self.ramp = config['test_config']['general']['fio_ramptime']
+        self.ioengine = config['test_config']['general'].get('ioengine', 'libaio')
         self.duration = config['test_config']['perf_seq_write'].get('runtime', \
             config['test_config']['general']['fio_runtime'])
         self.min_bw = config['test_config']['perf_seq_write']['bandwidth']
@@ -285,9 +291,9 @@ class SeqWrite(run.Run):
         # Create a single namespace
         n_utils.factory_reset(tree[self.drive]['sn'].strip())
 
-        cmd = (f'fio --name=seqwrite --iodepth=64 --rw=write --bs=256k --runtime={self.duration} '
+        cmd = (f'fio --name=seqwrite --iodepth=64 --rw=write --bs=128k --runtime={self.duration} '
                f'--ramp={self.ramp} --group_reporting --numjobs=32 --sync=1 --direct=1 --size=100% '
-               f'--filename=/dev/{self.drive}n1 --output-format=json')
+               f'--ioengine={self.ioengine} --filename=/dev/{self.drive}n1 --output-format=json')
         self.logger.info(f"Command: {cmd}")
         rc, std_out, std_err = n_utils.run_cmd(cmd, shell=True)
 
