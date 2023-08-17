@@ -20,7 +20,9 @@ test_config:
     fio_runtime: 1200
     fio_ramptime: 60
     max_ns: 32 # Max number of namespaces for the drive
-    #ioengine: Specify the io engine for FIO to override the default libaio
+    # If specified, this option will override the IO engine used for tests from libaio to specified engine
+    # Can be an IO engine supported by OS, for ex: psync/sync/io_uring/windowsaio etc.
+    # io_engine: io_uring
   perf_seq_write:
     bandwidth: 3000000 # 3 GB/s
   perf_seq_read:
