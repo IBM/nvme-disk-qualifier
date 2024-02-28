@@ -109,3 +109,18 @@ def query_drive(drive):
         sys.exit(1)
 
     return stdout
+
+
+def check_chubbyant_fork(drive):
+    output = query_drive(drive)
+    return 'Block SID Authentication' in output
+
+
+def is_default_msid(drive):
+    output = query_drive(drive)
+    return 'SID Value State = N' in output
+
+
+def is_sid_blocked(drive):
+    output = query_drive(drive)
+    return 'SID Blocked State = Y' and 'SID Value State = N' in output

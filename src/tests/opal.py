@@ -43,6 +43,55 @@ class OpalCapable(run.Run):
         self.success = True
 
 
+class OpalBlockSIDTest(run.Run):
+    def __init__(self, config):
+        super(OpalBlockSIDTest, self).__init__()
+
+        self.drive = config['drive']['name']
+        self.psid = config['drive']['psid']
+
+    def name(self):
+        return "opal_block_sid"
+
+    def description(self):
+        return ("Verifies that the drive is follows the TCG Opal standard for BlockSID")
+
+    def execute(self):
+        # Start in a failed state, work to success
+        self.success = False
+
+        # Just validate that it's OPAL enabled
+        if not sedutil.check_opal_capability(self.drive):
+            self.logger.error(f"Drive {self.drive} is not capable of OPAL.")
+            return
+
+        # Check for the chubbyant fork of sedutil-cli, if not installed, fail
+        if not sedutil.check_chubbyant_fork(self.drive):
+            self.logger.error(f"Installed version of sedutil-cli does not support"
+                f" BlockSID authentication function. Please install the chubbyant"
+                f" fork of sedutil-cli at https://github.com/ChubbyAnt/sedutil.")
+            return
+
+        # Check if the drive ownership is already set
+        if not sedutil.is_default_msid(self.drive):
+            self.logger.error(f"Drive {self.drive} has already been setup, the test"
+                f" does not apply.")
+            return
+
+        # Check if the drive has BlockSID set, if so, it needs a PSID revert
+        if sedutil.is_sid_blocked(self.drive):
+            self.logger.error(f"Drive {self.drive} has BlockSID set and needs a "
+                f"PSID revert for ownership.")
+            return
+
+        # Initial setup should fail if block SID is set
+        if sedutil.initial_setup(self.drive):
+            self.logger.info("Test passed!")
+            self.success = True
+        else:
+            self.logger.error(f"Initial setup failed with BlockSID set.")
+            return
+
 class OpalLockTest(run.Run):
 
     def __init__(self, config):
