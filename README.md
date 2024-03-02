@@ -153,7 +153,8 @@ cycle occurs. This mechanism can be used by BIOS/platform firmware to prevent a
 malicious entity from taking ownership of a SID credential that is still set to
 its default value of MSID.
 
-- Fork of sedutil that supports Block SID: GitHub - [ChubbyAnt/sedutil](https://github.com/ChubbyAnt/sedutil)
+- Current set of tests are written to use the fork of sedutil that supports Block
+SID until it is patched into the official build: GitHub - [ChubbyAnt/sedutil](https://github.com/ChubbyAnt/sedutil)
 - Query output with `SID Blocked State = Y` would indicate that the initialsetup
 command is being blocked
 - Blocked State can be cleared with PSID revert to allow for the host to take ownership
