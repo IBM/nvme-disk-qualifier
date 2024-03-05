@@ -4,6 +4,7 @@ drive:
 execute: # All tests run.
   - fw_update_simple
   - opal_capable
+  #- opal_block_sid # Check README to learn about this test
   - opal_test_locked_write
   - ns_layout
   - secure_erase_drive
