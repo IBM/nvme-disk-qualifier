@@ -59,7 +59,7 @@ def write_report(tests, drive, output_path):
     r.write(f"Model: {n_utils.get_controller_model(drive)}\n")
     r.write(f"Serial Num: {n_utils.get_controller_serial_number(drive)}\n")
     r.write(f"Firmware Level: {n_utils.get_controller_firmware(drive)}\n\n")
-    f.write(f"Drive Size: {n_utils.get_max_disk_size(drive)}\n\n")
+    r.write(f"Drive Size: {n_utils.get_max_disk_size(drive)}\n\n")
 
     r.write(f"Tests Executed: {len(tests)}\n")
     r.write(f"Tests Passed: {len([t for t in tests if t.result()])}\n")
